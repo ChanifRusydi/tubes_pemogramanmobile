@@ -69,7 +69,28 @@ app.get('/post/username/:username', (req, res) => {
 
 //update
 
+app.put('/post/id/:id',(req, res) => {
+    let sql = "UPDATE posts SET post='"+req.body.post+"' "
+              +"WHERE post_id='"+req.params.id+"'";
+    db.query(sql, (err, results) => {
+        if(err) throw err;
+        res.json({"status": 200,
+                  "message": "data berhasil diupdate",
+                  "data":null});
+    });
+});
+
 //delete
+
+app.delete('/posts/id/:id', (req, res) => {
+    let sql = "DELETE FROM posts WHERE post_id='"+req.params.id+"'";
+    db.query(sql, (err, results) => {
+        if(err) throw err;
+        res.json({"status": 200,
+                  "message": "data berhasil dihapus",
+                  "data":null});
+    });
+});
 
 app.use('/images',express.static('images'));
 
