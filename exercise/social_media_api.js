@@ -14,7 +14,7 @@ const db = mysql.createConnection({
     database: 'media_social'
 });
 
-//menjalankan db table post
+//menjalankan db table posts//
 //create
 app.post('/post', (req, res) => {
     let sql = "INSERT INTO posts SET post_date=NOW()"
@@ -31,15 +31,44 @@ app.post('/post', (req, res) => {
 
 //retriave
 app.get('/post', (req, res) => {
-    let sql = "SELECT post_id, username, post, DATE FORMAT(post_date, '%W %D XM %Y %H:%i') as post_date FROM posts";
+    let sql = "SELECT post_id, username, post, DATE_FORMAT (post_date, '%W %D %M %Y %H:%i') as post_date FROM posts"
+
     db.query(sql, (err, results) => {
         if(err) throw err;
         res.json({"status": 200,
-                  "message": "data diambil",
+                  "message": "data berhasil diambil",
                   "data":results});
     });
 });
+
+//retriave by id
+app.get('/post/id/:id', (req, res) => {
+    let sql = "SELECT post_id, username, post, DATE_FORMAT (post_date, '%W %D %M %Y %H:%i') as post_date FROM posts WHERE post_id='"+req.params.id+"'";
+    
+
+    db.query(sql, (err, results) => {
+        if(err) throw err;
+        res.json({"status": 200,
+                  "message": "data berhasil diambil",
+                  "data":results});
+    });
+});
+
+//retriave by records username
+app.get('/post/username/:username', (req, res) => {
+    let sql = "SELECT post_id, username, post, DATE_FORMAT (post_date, '%W %D %M %Y %H:%i') as post_date FROM posts WHERE username='"+req.params.username+"'";
+    
+
+    db.query(sql, (err, results) => {
+        if(err) throw err;
+        res.json({"status": 200,
+                  "message": "data berhasil diambil",
+                  "data":results});
+    });
+}); 
+
 //update
+
 //delete
 
 app.use('/images',express.static('images'));
